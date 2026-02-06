@@ -116,17 +116,24 @@ async def clone_medias(bot: Bot, m: Message):
                             elif file_type == "text": text += 1; file_name = str()
                             else: pass
                             #
+                            caption = None
+                            caption_entities = None
+                            override_caption = False
                             if (file_type != "text") and (id in custom_caption):
                                 caption = custom_caption[id]
-                            elif bool(default_caption):
-                                caption = messages.caption
+                                override_caption = True
                             elif bool(fn_caption):
                                 try:
-                                    caption = str(file_name).rsplit('.', 1)[0]
+                                    caption = str(file_name).rsplit('.', 1)[0] if file_name else ""
                                 except Exception:
-                                    caption = str()
-                            else:
-                                caption = str()
+                                    caption = ""
+                                override_caption = True
+                            elif bool(default_caption):
+                                # Preserve original caption formatting when enabled
+                                if messages.caption:
+                                    caption = messages.caption
+                                    caption_entities = messages.caption_entities
+                                    override_caption = True
                             #
                             total_copied = doc + video + audio + voice + photo + text
                             pct = await calc_percentage(sp, ep, msg_id)
@@ -151,14 +158,18 @@ async def clone_medias(bot: Bot, m: Message):
                                 pass
                             progress = await calc_progress(pct)
                             try:
-                                await bot.USER.copy_message(
+                                copy_kwargs = dict(
                                     chat_id=target_chat,
                                     from_chat_id=source_chat,
-                                    caption=caption if bool(caption) else str(),
                                     message_id=msg_id,
                                     reply_markup=messages.reply_markup,
                                     disable_notification=True
                                 )
+                                if override_caption:
+                                    copy_kwargs["caption"] = caption if caption is not None else ""
+                                    if caption_entities:
+                                        copy_kwargs["caption_entities"] = caption_entities
+                                await bot.USER.copy_message(**copy_kwargs)
                             except FloodWait as e:
                                 await asyncio.sleep(e.value)
                             except Exception:
