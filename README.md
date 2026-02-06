@@ -13,6 +13,74 @@ Read the [documentation](https://space4renjith.blogspot.com/2022/05/clonebot-tec
 
 [@M4Mallu](https://t.me/rmprojects)
 
+---
+
+## Configuration
+
+Edit `config.py` and fill in your credentials:
+
+| Variable | Description |
+|---|---|
+| `TG_BOT_TOKEN` | Bot token from [@BotFather](https://t.me/BotFather) |
+| `APP_ID` | API ID from [my.telegram.org](https://my.telegram.org) |
+| `API_HASH` | API Hash from [my.telegram.org](https://my.telegram.org) |
+| `TG_USER_SESSION` | Pyrogram user session string |
+| `DB_URI` | PostgreSQL database URI |
+
+---
+
+<details>
+    <summary><b>Deploy Using Python (venv) — Recommended</b></summary>
+
+### Prerequisites
+
+- Python 3.9+ installed
+- PostgreSQL database (local or hosted, e.g. [Neon](https://neon.tech), [Supabase](https://supabase.com), [ElephantSQL](https://www.elephantsql.com))
+
+### Steps
+
+1. **Clone the repository**
+
+    ```bash
+    git clone https://github.com/m4mallu/clonebot.git
+    cd clonebot
+    ```
+
+2. **Create a virtual environment and activate it**
+
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+    On Windows:
+    ```bash
+    python -m venv venv
+    venv\Scripts\activate
+    ```
+
+3. **Install dependencies**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Configure the bot**
+
+    Edit `config.py` with your credentials (see Configuration table above).
+
+5. **Run the bot**
+
+    ```bash
+    python main.py
+    ```
+
+6. **To stop the bot**
+
+    Press `Ctrl + C` in the terminal.
+
+</details>
+
 <details>
     <summary><b>Deploy Using Docker</b></summary>
 

@@ -234,9 +234,18 @@ async def set_custom_caption(client: Bot, cb: CallbackQuery):
 @Client.on_callback_query(filters.regex(r'^capt_cnf_yes_btn$'))
 async def caption_yes_button(client: Bot, cb: CallbackQuery):
     id = int(cb.from_user.id)
-    caption_text = str(cb.message.reply_to_message.text.html)
+    src_msg = cb.message.reply_to_message
+    caption_text = ""
+    caption_entities = None
+    if src_msg:
+        if src_msg.text:
+            caption_text = src_msg.text
+            caption_entities = src_msg.entities
+        elif src_msg.caption:
+            caption_text = src_msg.caption
+            caption_entities = src_msg.caption_entities
     if caption_text:
-        custom_caption[id] = caption_text
+        custom_caption[id] = {"text": caption_text, "entities": caption_entities}
         await cb.answer(Presets.CUSTOM_CAPTION_CNF, True)
         await cb.message.reply_to_message.delete()
         await cb.message.delete()
