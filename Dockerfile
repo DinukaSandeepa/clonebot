@@ -1,6 +1,6 @@
-FROM python:latest
-RUN apt update && apt upgrade -y
-RUN apt install git pip curl python3-pip -y
+FROM python:3.9-slim
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y git curl python3-pip
 
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
